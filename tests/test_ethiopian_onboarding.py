@@ -553,6 +553,42 @@ async def test_the_summary_lists_every_collected_field(api_env) -> None:
     assert "Mathematics" in rendered
     assert "AASTU" in rendered
     assert "9/10" in rendered
+    # Options are shown by the label the tutor picked, not the stored enum key,
+    # and exam scores are whole numbers rather than the float they are stored as.
+    assert "University graduate" in rendered
+    assert "UNIVERSITY_GRADUATE" not in rendered
+    assert "Ethiopian Higher Education Entrance Exam" in rendered
+    assert "612/840" in rendered
+    assert "612.0" not in rendered
+
+
+@pytest.mark.asyncio
+async def test_every_step_prompts_with_the_right_counter(api_env) -> None:
+    """The counter must cover the whole flow, not the first 16 of 22 steps."""
+    numbered = [
+        step
+        for step in eth.STEPS
+        if step.kind != "summary" and "Step" in step.prompt
+    ]
+    total = len(numbered)
+
+    assert total == 22, "the flow collects more steps than the old /16 claimed"
+    for index, step in enumerate(numbered, start=1):
+        assert f"Step {index}/{total}" in step.prompt, step.field
+        assert f"Step {index}/{total - 1}" not in step.prompt, step.field
+
+
+@pytest.mark.asyncio
+async def test_submitting_notifies_the_admin(api_env, fresh_db) -> None:
+    """The admin must actually hear about a new application."""
+    session = fresh_db()
+    conversation = eth.build_conversation()
+    context = FakeContext()
+
+    state = await drive(conversation, context, _COMPLETE_ANSWERS)
+    await drive(conversation, context, [("callback", "eth:submit")], state=state)
+
+    assert any("New tutor application" in message for message in context.bot.sent)
 
 
 @pytest.mark.asyncio

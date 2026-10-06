@@ -93,49 +93,49 @@ class Step:
 
 STEPS: tuple[Step, ...] = (
     Step(EthiopianTutorStates.FULL_NAME, "full_name",
-         "👤 <b>Step 1/16 — Full name</b>\n\nYour full name as it appears on your national ID.", "name"),
+         "👤 <b>Step 1/22 — 👤 Full name</b>\n\nYour full name as it appears on your national ID.", "name"),
     Step(EthiopianTutorStates.GENDER, "gender",
-         "👤 <b>Step 2/16 — Gender</b>\n\nTap your choice.", "choice"),
+         "👤 <b>Step 2/22 — 👤 Gender</b>\n\nTap your choice.", "choice"),
     Step(EthiopianTutorStates.AGE, "age",
-         "🎂 <b>Step 3/16 — Age</b>\n\nYour age in years (18 or older).", "int"),
+         "🎂 <b>Step 3/22 — 🎂 Age</b>\n\nYour age in years (18 or older).", "int"),
     Step(EthiopianTutorStates.PHONE, "phone",
-         "📞 <b>Step 4/16 — Phone number</b>\n\nInclude your country code, e.g. <code>+251911234567</code>.", "phone"),
+         "📞 <b>Step 4/22 — 📞 Phone number</b>\n\nInclude your country code, e.g. <code>+251911234567</code>.", "phone"),
     Step(EthiopianTutorStates.CURRENT_ADDRESS, "current_address",
-         "📍 <b>Step 5/16 — Current address</b>\n\nWhere you live now, e.g. <code>Bole, Addis Ababa</code>.", "address"),
+         "📍 <b>Step 5/22 — 📍 Current address</b>\n\nWhere you live now, e.g. <code>Bole, Addis Ababa</code>.", "address"),
     Step(EthiopianTutorStates.LOCATIONS, "locations",
-         "📍 <b>Step 6/16 — Tutoring locations</b>\n\nWhich areas are you available to tutor in? Tap to toggle, then Done.", "multiselect"),
+         "📍 <b>Step 6/22 — 📍 Tutoring locations</b>\n\nWhich areas are you available to tutor in? Tap to toggle, then Done.", "multiselect"),
     Step(EthiopianTutorStates.GRADES, "grades",
-         "🎓 <b>Step 7/16 — Grades you can tutor</b>\n\nSelect all that apply.", "multiselect"),
+         "🎓 <b>Step 7/22 — 🎓 Grades you can tutor</b>\n\nSelect all that apply.", "multiselect"),
     Step(EthiopianTutorStates.SUBJECTS, "subjects",
-         "📚 <b>Step 8/16 — Subjects you can tutor</b>\n\nSelect all that apply.", "multiselect"),
+         "📚 <b>Step 8/22 — 📚 Subjects you can tutor</b>\n\nSelect all that apply.", "multiselect"),
     Step(EthiopianTutorStates.ENGLISH, "english_proficiency",
-         "🇬🇧 <b>Step 9/16 — English communication skill</b>\n\n1–10. This is your own rating; an optional recording helps our admin verify it.", "english"),
+         "🇬🇧 <b>Step 9/22 — 🇬🇧 English communication skill</b>\n\n1–10. This is your own rating; an optional recording helps our admin verify it.", "english"),
     Step(EthiopianTutorStates.ENGLISH_VOICE, "english_voice",
-         "🎤 <b>Step 10/16 — English voice introduction (optional)</b>\n\nSend a 30–60 second voice message in English, or skip.\n\n<i>This is supporting evidence only — it is reviewed by an admin, not auto-scored.</i>", "voice", optional=True),
+         "🎤 <b>Step 10/22 — 🎤 English voice introduction (optional)</b>\n\nSend a 30–60 second voice message in English, or skip.\n\n<i>This is supporting evidence only — it is reviewed by an admin, not auto-scored.</i>", "voice", optional=True),
     Step(EthiopianTutorStates.EDUCATION_LEVEL, "education_level",
-         "🎓 <b>Step 11/16 — Current / highest education</b>", "edu_level"),
+         "🎓 <b>Step 11/22 — 🎓 Current / highest education</b>", "edu_level"),
     Step(EthiopianTutorStates.UNIVERSITY, "university",
-         "🏫 <b>Step 12/16 — University / institution</b>\n\nWhich university or college did you attend?", "text"),
+         "🏫 <b>Step 12/22 — 🏫 University / institution</b>\n\nWhich university or college did you attend?", "text"),
     Step(EthiopianTutorStates.DEPARTMENT, "department",
-         "🧪 <b>Step 13/16 — Department</b>\n\nYour department or field of study.", "text"),
+         "🧪 <b>Step 13/22 — 🧪 Department</b>\n\nYour department or field of study.", "text"),
     Step(EthiopianTutorStates.UNIVERSITY_YEAR, "university_year",
-         "📅 <b>Step 14/16 — Year</b>\n\nYour graduation year (or current year of study).", "year"),
+         "📅 <b>Step 14/22 — 📅 Year</b>\n\nYour graduation year (or current year of study).", "year"),
     Step(EthiopianTutorStates.CGPA, "cgpa",
-         "📈 <b>Step 15/16 — CGPA (if applicable)</b>\n\nYour current/last CGPA, e.g. <code>3.75</code>.", "cgpa", optional=True),
+         "📈 <b>Step 15/22 — 📈 CGPA (if applicable)</b>\n\nYour current/last CGPA, e.g. <code>3.75</code>.", "cgpa", optional=True),
     Step(EthiopianTutorStates.ENTRANCE_TYPE, "entrance_exam_type",
-         "📝 <b>Step 16a — Admission exam type</b>", "exam_type"),
+         "📝 <b>Step 16/22 — 📝 Admission exam type</b>", "exam_type"),
     Step(EthiopianTutorStates.ENTRANCE_MAX_SCORE, "entrance_exam_max_score",
-         "⚖️ <b>Step 16b — Maximum score for that exam</b>\n\nE.g. <code>840</code> or <code>100</code>. Stored so scores from different scales are normalised.", "max_score"),
+         "⚖️ <b>Step 17/22 — ⚖️ Maximum score for that exam</b>\n\nE.g. <code>840</code> or <code>100</code>. Stored so scores from different scales are normalised.", "max_score"),
     Step(EthiopianTutorStates.ENTRANCE_SCORE, "entrance_exam_score",
-         "🏅 <b>Step 16c — Your entrance exam score</b>\n\nE.g. <code>612</code>.", "exam_score"),
+         "🏅 <b>Step 18/22 — 🏅 Your entrance exam score</b>\n\nE.g. <code>612</code>.", "exam_score"),
     Step(EthiopianTutorStates.ENTRANCE_YEAR, "entrance_exam_year",
-         "📆 <b>Step 16d — Exam year</b>\n\nThe year you took that exam, e.g. <code>2016</code>.", "year"),
+         "📆 <b>Step 19/22 — 📆 Exam year</b>\n\nThe year you took that exam, e.g. <code>2016</code>.", "year"),
     Step(EthiopianTutorStates.EXPERIENCE_YEARS, "teaching_experience_years",
-         "💼 <b>Teaching experience</b>\n\nHow many years of tutoring/teaching experience do you have? Whole number.", "int", optional=True),
+         "💼 <b>Step 20/22 — Teaching experience</b>\n\nHow many years of tutoring/teaching experience do you have? Whole number.", "int", optional=True),
     Step(EthiopianTutorStates.EXPERIENCE_DESCRIPTION, "teaching_experience_description",
-         "🧑‍🏫 <b>Experience details</b>\n\nBriefly describe your experience — subjects taught, grades, and where (e.g. private tutoring, school).", "text", optional=True),
+         "🧑‍🏫 <b>Step 21/22 — Experience details</b>\n\nBriefly describe your experience — subjects taught, grades, and where (e.g. private tutoring, school).", "text", optional=True),
     Step(EthiopianTutorStates.DOCUMENTS, "documents",
-         "📄 <b>Documents</b>\n\nUpload any academic certificates (PDF or image). Tap Skip when you are done, or send them now.", "documents", optional=True),
+         "📄 <b>Step 22/22 — Documents</b>\n\nUpload any academic certificates (PDF or image). Tap Skip when you are done, or send them now.", "documents", optional=True),
     Step(EthiopianTutorStates.SUMMARY, "summary", "", "summary"),
 )
 
@@ -290,7 +290,18 @@ def _summary_lines(app: dict[str, Any]) -> list[str]:
             return default
         if isinstance(value, list):
             return ", ".join(str(item) for item in value)
+        # Scores are stored as floats so results from different exam scales can
+        # be normalised, but the tutor typed "612", not "612.0". Whole numbers
+        # are shown without the trailing ".0" that str() would add.
+        if isinstance(value, float) and value.is_integer():
+            return str(int(value))
         return str(value)
+
+    def labelled(value: Any, table: Sequence[tuple[str, str]], default: str = "—") -> str:
+        """Render a stored enum key as the label the tutor actually picked."""
+        if value in (None, "", []):
+            return default
+        return dict(table).get(str(value), str(value))
 
     lines = [
         "📋 <b>Application Summary</b>",
@@ -305,12 +316,12 @@ def _summary_lines(app: dict[str, Any]) -> list[str]:
         f"📚 <b>Subjects:</b> {fmt(app.get('subjects'))}",
         f"🇬🇧 <b>English:</b> {fmt(app.get('english_proficiency'))}/10",
         f"🎤 <b>English voice:</b> {'✅ received' if app.get('english_voice_file_id') else '—'}",
-        f"🎓 <b>Education level:</b> {fmt(app.get('education_level'))}",
+        f"🎓 <b>Education level:</b> {labelled(app.get('education_level'), ETH_EDUCATION_LEVELS)}",
         f"🏫 <b>Institution:</b> {fmt(app.get('university'))}",
         f"🧪 <b>Department:</b> {fmt(app.get('department'))}",
         f"📅 <b>Year:</b> {fmt(app.get('university_year'))}",
         f"📈 <b>CGPA:</b> {fmt(app.get('cgpa'))}",
-        f"📝 <b>Entrance exam:</b> {fmt(app.get('entrance_exam_type'))} — {fmt(app.get('entrance_exam_score'))}/{fmt(app.get('entrance_exam_max_score'))} ({fmt(app.get('entrance_exam_year'))})",
+        f"📝 <b>Entrance exam:</b> {labelled(app.get('entrance_exam_type'), ETH_ENTRANCE_EXAM_TYPES)} — {fmt(app.get('entrance_exam_score'))}/{fmt(app.get('entrance_exam_max_score'))} ({fmt(app.get('entrance_exam_year'))})",
         f"💼 <b>Experience:</b> {fmt(app.get('teaching_experience_years'))} yr(s)",
         f"🧑‍🏫 <b>Details:</b> {fmt(app.get('teaching_experience_description'))}",
         f"📄 <b>Documents:</b> {fmt([d.get('document_type') for d in app.get('documents', [])])}",
@@ -686,7 +697,6 @@ async def _submit_application(
 ) -> int:
     """Requirement 2.7: persist, archive in Telegram, notify the admin."""
     app = get_app(context)
-    telegram_user_id = update.effective_user.id
     missing = _summary_missing(app)
     if missing:
         await _safe_reply(
@@ -745,10 +755,9 @@ async def _submit_application(
     )
    
     with session_scope() as session:
-        try:
-            tutor = profile_service_create_tutor_lookup(session, update.effective_user.id)
-        except Exception:
-            tutor = None
+        tutor = tutor_service.get_tutor_by_telegram_id(
+            session, update.effective_user.id
+        )
         if tutor is not None:
             await notify_admin_new_tutor(context.bot, tutor)
 
