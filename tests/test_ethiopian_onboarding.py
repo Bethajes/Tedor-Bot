@@ -794,3 +794,47 @@ async def test_complete_profile_is_a_noop_when_complete(api_env, fresh_db) -> No
     state = await drive(conversation, context, [("command", "complete_profile")], start=False)
     assert state == conversation.END
     assert "complete" in "\n".join(context.bot.sent).casefold()
+
+
+@pytest.mark.asyncio
+async def test_the_global_fallback_stays_quiet_during_onboarding(api_env) -> None:
+    """Answering a question must not trigger "I did not recognise that".
+
+    The fallback is a group-3 handler that silences itself while a flow is
+    active. Onboarding had to register that flow marker itself, otherwise every
+    answer was followed by a menu prompt.
+    """
+    from app.bot.handlers.common import active_flow
+    from app.bot.handlers.start import unknown_message
+
+    conversation = eth.build_conversation()
+    context = FakeContext()
+
+    state = await drive(conversation, context, _COMPLETE_ANSWERS[:3])
+    assert state != conversation.END
+    assert active_flow(context) == "tutor", active_flow(context)
+
+    # Whatever the tutor types mid-flow, the fallback must not answer.
+    await unknown_message(text_update("anything at all", bot=context.bot), context)
+    assert "did not recognise" not in "\n".join(context.bot.sent).casefold()
+
+    # Once the run is over the fallback speaks again.
+    await drive(conversation, context, [("callback", "eth:cancel")], state=state)
+    assert active_flow(context) is None
+    await unknown_message(text_update("hello?", bot=context.bot), context)
+    assert "did not recognise" in "\n".join(context.bot.sent).casefold()
+
+
+@pytest.mark.asyncio
+async def test_submitting_clears_the_flow_marker(api_env, fresh_db) -> None:
+    """The marker must not outlive the run, or the menu hint stays dead."""
+    from app.bot.handlers.common import active_flow
+
+    conversation = eth.build_conversation()
+    context = FakeContext()
+
+    state = await drive(conversation, context, _COMPLETE_ANSWERS)
+    assert active_flow(context) == "tutor"
+    await drive(conversation, context, [("callback", "eth:submit")], state=state)
+
+    assert active_flow(context) is None

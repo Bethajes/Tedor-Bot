@@ -27,6 +27,7 @@ from telegram.ext import (
     filters,
 )
 
+from app.bot.handlers.common import end_flow, start_flow
 from app.bot.keyboards.tutor_onboarding import (
     CB_BACK,
     CB_CANCEL,
@@ -766,8 +767,15 @@ async def _submit_application(
 
 
 def _clear_run(context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Drop everything about the run in progress, including the flow marker.
+
+    The marker has to go too: the global fallback only stays quiet while a
+    flow is active, so leaving it set would silence the fallback for good once
+    a tutor finished applying.
+    """
     for key in (APP_KEY, STEP_KEY, DOC_QUEUE_KEY, SEQUENCE_KEY, MODE_KEY):
         context.user_data.pop(key, None)
+    end_flow(context)
 
 
 async def _submit_enrichment(
@@ -904,8 +912,7 @@ def _missing_fields(app: dict[str, Any]) -> list[str]:
 
 
 async def _cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    context.user_data.pop(APP_KEY, None)
-    context.user_data.pop(STEP_KEY, None)
+    _clear_run(context)
     await _safe_reply(update, CANCEL_TEXT_LOCAL)
     return ConversationHandler.END
 
@@ -918,6 +925,10 @@ async def _cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def start_application(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     GET = get_app(context)
     GET.clear()
+    # The global "I did not recognise that" fallback silences itself while a
+    # flow is active, so the tutor is never told to use the menu in the middle
+    # of answering a question.
+    start_flow(context, "tutor")
     set_step(context, int(EthiopianTutorStates.FULL_NAME))
     await _safe_reply(
         update,
@@ -1176,6 +1187,7 @@ async def complete_profile_entry(update: Update, context: ContextTypes.DEFAULT_T
     ]
     context.user_data[SEQUENCE_KEY] = steps
     context.user_data[MODE_KEY] = MODE_ENRICH
+    start_flow(context, "tutor")
     set_step(context, steps[0])
 
     # The bullets name the steps this run will actually ask for. Deriving them from
