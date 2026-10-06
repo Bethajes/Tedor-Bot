@@ -83,13 +83,17 @@ def choice_keyboard(field: str, options: Sequence[str]) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(rows)
 
 
-def english_level_keyboard() -> InlineKeyboardMarkup:
-    """The 1-10 English proficiency picker, two columns."""
+def english_level_keyboard(field: str = "english_proficiency") -> InlineKeyboardMarkup:
+    """The 1-10 English proficiency picker, two columns.
+
+    The callback carries the field it belongs to, so the button resolves against
+    the same name the handler stores the answer under.
+    """
     rows: list[list[InlineKeyboardButton]] = []
     current: list[InlineKeyboardButton] = []
     for index, (_value, label) in enumerate(ENGLISH_LEVELS):
         current.append(
-            InlineKeyboardButton(label, callback_data=f"eth:english:pick:{index}")
+            InlineKeyboardButton(label, callback_data=f"eth:{field}:pick:{index}")
         )
         if len(current) == 2:
             rows.append(current)

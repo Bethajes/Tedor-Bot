@@ -16,6 +16,7 @@ from app.api.schemas import (
     DistinctValuesResponse,
     DocumentReference,
     TutorListResponse,
+    TutorPublicProfileResponse,
     TutorPublicResponse,
     TutorSearchParams,
 )
@@ -156,6 +157,28 @@ def search_tutors(
         params.page,
         params.page_size,
     )
+
+
+@router.get(
+    "/tutors/{tutor_id}/profile",
+    response_model=TutorPublicProfileResponse,
+)
+def get_tutor_profile(tutor_id: str, session: DbSession) -> TutorPublicProfileResponse:
+    """The structured public profile: qualifications, areas, grades.
+
+    Declared above ``/tutors/{tutor_id}`` deliberately — FastAPI matches routes
+    in declaration order, so a more specific path has to come first or the
+    one-segment route would swallow it.
+
+    Public by design and safe without a secret: the response carries no phone
+    number, email, home address, Telegram identifier or document reference.
+    """
+    tutor = tutor_service.get_tutor_by_tdr_id(session, tutor_id)
+    if tutor is None or tutor.status != TutorStatus.VERIFIED:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Tutor not found"
+        )
+    return TutorPublicProfileResponse.from_tutor(tutor)
 
 
 @router.get("/tutors/{tutor_id}", response_model=TutorPublicResponse)

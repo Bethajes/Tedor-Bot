@@ -830,6 +830,37 @@ def update_profile_fields(session: Session, tutor: Tutor, values: dict[str, Any]
     return tutor
 
 
+def backfill_education_from_legacy(session: Session, tutor: Tutor) -> dict[str, Any]:
+    """Copy an imported tutor's legacy education record into the new columns.
+
+    Tutors imported before the structured fields existed hold their institution,
+    course and graduation year in the education table while the matching columns
+    stay empty. Reusing that record keeps ``/complete_profile`` from asking for
+    an answer the tutor already gave, and makes the completeness report agree
+    with the conversation. Only empty columns are filled, so an explicit
+    structured answer always wins.
+    """
+    record = tutor.education[0] if tutor.education else None
+    if record is None:
+        return {}
+
+    candidates = {
+        "university": record.institution,
+        "department": record.field or record.degree,
+        "university_year": record.graduation_year,
+    }
+    filled = {
+        key: value
+        for key, value in candidates.items()
+        if value and not getattr(tutor, key, None)
+    }
+    if not filled:
+        return {}
+
+    update_profile_fields(session, tutor, filled)
+    return filled
+
+
 def set_member_referral_status(
     session: Session, tutor: Tutor, status: Any, verified_by: int | None = None
 ) -> Tutor:

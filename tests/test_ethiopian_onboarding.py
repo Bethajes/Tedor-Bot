@@ -712,7 +712,10 @@ async def test_complete_profile_lists_what_is_missing(api_env, fresh_db) -> None
     context = FakeContext()
     state = await drive(conversation, context, [("command", "complete_profile")], start=False)
 
-    assert state == conversation.END
+    # The command starts a run on the first outstanding step rather than
+    # ending. This imported tutor has no gender on file either, and the plan
+    # puts genuinely unknown personal details ahead of the section-26 fields.
+    assert state == int(EthiopianTutorStates.GENDER)
     rendered = "\n".join(context.bot.sent)
     assert "Profile completion" in rendered
     assert "Tutoring locations" in rendered
@@ -734,12 +737,15 @@ async def test_complete_profile_is_a_noop_when_complete(api_env, fresh_db) -> No
         session,
         tutor,
         {
+            "gender": "Male",
             "age": 26,
             "current_address": "Bole, Addis Ababa",
             "university": "AAU",
             "education_level": "UNIVERSITY_GRADUATE",
+            "entrance_exam_type": "EHE",
             "entrance_exam_max_score": 840,
             "entrance_exam_score": 500,
+            "entrance_exam_year": 2016,
         },
     )
     P.record_document(session, tutor, "UNIVERSITY_TRANSCRIPT", "f", file_name="t.pdf")
@@ -749,5 +755,6 @@ async def test_complete_profile_is_a_noop_when_complete(api_env, fresh_db) -> No
 
     conversation = eth.build_conversation()
     context = FakeContext()
-    await drive(conversation, context, [("command", "complete_profile")], start=False)
+    state = await drive(conversation, context, [("command", "complete_profile")], start=False)
+    assert state == conversation.END
     assert "complete" in "\n".join(context.bot.sent).casefold()
