@@ -72,9 +72,6 @@ Job Status: **Open**
 
 💰 **Compensation**: {compensation}
 
-
-
-
 ✅ **Requirements**:
 
 ☑️ Proximity to #{location},
@@ -82,13 +79,7 @@ Job Status: **Open**
 ☑️ Passion for #teaching,
 ☑️ Strong command of the #English language and robust #Math foundation.
 
-
-
-
 📩 Contact us: @Tedor_Team
-
-
-
 
 #TEDOR #TUTORING #TUTORIAL #TUTOR {subject_hashtags} #አስጠኚዎች #አስጠኚ"""
 

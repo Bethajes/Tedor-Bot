@@ -243,9 +243,6 @@ def test_requirements_carry_the_exact_brand_wording() -> None:
         "☑️ Passion for #teaching,\n"
         "☑️ Strong command of the #English language and robust #Math foundation.\n"
         "\n"
-        "\n"
-        "\n"
-        "\n"
     )
 
 
@@ -348,9 +345,6 @@ EXPECTED_POST = "\n".join(
         "",
         "💰 **Compensation**: 300 Birr / 1 hour",
         "",
-        "",
-        "",
-        "",
         "✅ **Requirements**:",
         "",
         "☑️ Proximity to #Ayat_Tsebel,",
@@ -358,13 +352,7 @@ EXPECTED_POST = "\n".join(
         "☑️ Passion for #teaching,",
         "☑️ Strong command of the #English language and robust #Math foundation.",
         "",
-        "",
-        "",
-        "",
         "📩 Contact us: @Tedor_Team",
-        "",
-        "",
-        "",
         "",
         "#TEDOR #TUTORING #TUTORIAL #TUTOR #ENGLISH #MATH #SCIENCE "
         "#አስጠኚዎች #አስጠኚ",
@@ -374,6 +362,32 @@ EXPECTED_POST = "\n".join(
 
 def test_generated_post_matches_the_exact_template() -> None:
     assert _render() == EXPECTED_POST
+
+
+def test_the_post_never_stacks_blank_lines() -> None:
+    """Runs of blank lines render as tall dead gaps in the Telegram message.
+
+    The template used to pad between sections with three blank lines each,
+    which showed up as a large empty band before Requirements and again before
+    the contact line.
+    """
+    text = _render()
+    assert "\n\n\n" not in text, "sections are separated by a single blank line"
+    assert not text.startswith("\n")
+    assert not text.endswith("\n")
+
+
+def test_each_section_is_separated_by_exactly_one_blank_line() -> None:
+    lines = _render().split("\n")
+    for marker in ("✅ **Requirements**:", "📩 Contact us: @Tedor_Team"):
+        index = lines.index(marker)
+        assert lines[index - 1] == "", f"{marker} needs one blank line above it"
+
+    # Compensation is the last header line, so match it by prefix.
+    compensation = next(
+        index for index, line in enumerate(lines) if line.startswith("💰 **Compensation**")
+    )
+    assert lines[compensation - 1] == ""
 
 
 def test_empty_location_cannot_be_rendered() -> None:
