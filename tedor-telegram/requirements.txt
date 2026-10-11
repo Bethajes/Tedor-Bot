@@ -1,0 +1,19 @@
+python-telegram-bot==21.*
+fastapi
+uvicorn[standard]
+# Required as soon as any route accepts ``Form`` or ``UploadFile``: FastAPI
+# raises at application construction time without it, so a missing entry here
+# is not a missing optional extra but a bot that will not start.
+python-multipart
+# Signs the short-lived JWT the web (non-Telegram) Mini App login issues. It
+# carries the same ``telegram_user_id`` the Init Data does, so the Mini App
+# route handlers are identical for both callers.
+pyjwt
+sqlalchemy
+pydantic
+pydantic-settings
+python-dotenv
+hypothesis
+pytest
+pytest-asyncio
+httpx
