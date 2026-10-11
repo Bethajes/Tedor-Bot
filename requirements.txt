@@ -1,0 +1,11 @@
+python-telegram-bot==21.*
+fastapi
+uvicorn[standard]
+sqlalchemy
+pydantic
+pydantic-settings
+python-dotenv
+hypothesis
+pytest
+pytest-asyncio
+httpx
